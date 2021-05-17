@@ -53,7 +53,7 @@ export const ConcurrentUnions20210518 = (
         that new array.
       </p>
       <p>
-        This provided me a clean an consistent way to batch by microtask. I hadn't
+        This provided me a clean and consistent way to batch by microtask. I hadn't
         yet realised that I could use this as well as part of a union.
       </p>
       <p>

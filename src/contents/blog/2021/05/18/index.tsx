@@ -129,12 +129,8 @@ async function wait() {
       </p>
       <p>
         The variable <span class="code">currentMicrotaskPromise</span> is used to
-        utilise the same microtask if we resolved all of our previous
-        iterator promises resolved before the end of the microtask. If this
-        promise is already resolved, and no iterator promises resolve immediately
-        then the next <span class="code">reason</span> will be&nbsp;
-        <span class="code">NextMicrotask</span> causing the microtask to be reset
-        then running the next set of resolution rules explained below
+        utilise the same microtask if all of our previous
+        iterator promises resolved before the end of the microtask.
       </p>
       <h3>The first wait</h3>
       <p>
@@ -148,6 +144,10 @@ async function wait() {
         <li>We found an error occurred somewhere within our union</li>
         <li>A new iterator is known and should be added to our promise set</li>
       </ol>
+      <p>
+        We use the microtask as a common target as it is the smallest shared
+        async precision between all JavaScript code.
+      </p>
       <p>
         If we have at least one result produced from with <span class="code">promises</span>
         &nbsp;and within the scope of our union, and we have no <span class="code">errors.length</span>

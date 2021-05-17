@@ -150,7 +150,7 @@ async function wait() {
       </p>
       <p>
         If we have at least one result produced from with <span class="code">promises</span>
-        &nbsp;and within the scope of our union, and we have no <span class="code">errors.length</span>
+        &nbsp;, and we have no <span class="code">errors.length</span>
         &nbsp;then we have the next set of updated values, we clone these before
         returning and reset our working <span class="code">results</span> array
       </p>
@@ -179,7 +179,8 @@ return cloned;`}
         Now that I had a set of values that represented the next state, externally
         from the above <span class="code">wait</span> function I could
         freely store a copy of the latest state for all iterators, and update
-        it with every iteration, yielding to the consumers the cloned state.
+        it with every iteration, yielding to the consumers the newly snapshot
+        state.
       </p>
       <p>
         In the end the implementation uses
@@ -206,7 +207,7 @@ if (!valuesDone) {
       <p>
         The second point shows as <a rel="noopener" href="https://lamport.azurewebsites.net/tla/advanced.html?unhideBut=hide-stuttering&unhideDiv=stuttering" target="_blank">stuttering steps</a>
         &nbsp;to a consumer. If the source values are unique the consumer can freely
-        ignore values it already knows, allowing for the implementation to
+        ignore values it already knows, allowing for this implementation to
         freely provide maximum consistency.
       </p>
       <h3>Consuming</h3>

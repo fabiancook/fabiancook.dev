@@ -65,8 +65,8 @@ export const ConcurrentUnions20210518 = (
       <p>
         This however led to issues because now the execution of these async
         iterators are detached completely from the consumer, in some cases
-        this may be whats wanted, but for what I was looking for just in time
-        execution suited better.
+        this may be whats wanted, but the implementation what I was looking for
+        suited a just in time model better.
       </p>
       <p>
         All was not lost though, because this led me to the current pattern

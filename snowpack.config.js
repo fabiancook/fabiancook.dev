@@ -3,6 +3,7 @@ export default {
   mount: {
     /* ... */
     "src": "/",
+    "src/2021/05/18": "/2021/05/18",
     "public": "/"
   },
   exclude: [
@@ -21,7 +22,8 @@ export default {
     minify: true,
     target: "es2018",
     entrypoints: [
-      "index.html"
+      "index.html",
+      "2021/05/18/concurrent-unions.html"
     ]
   },
   packageOptions: {

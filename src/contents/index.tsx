@@ -3,24 +3,36 @@ import { Intro } from "./intro";
 import * as Posts from "./blog";
 import { Template } from '../template';
 import { createFragment } from '@opennetwork/vnode';
+import { assertPostTokens, Post, Summary, Title } from './blog/post';
 
-const posts = Object.keys(Posts)
+const allPosts = Object.keys(Posts)
   .filter((key: string): key is keyof typeof Posts => Object.prototype.hasOwnProperty.call(Posts, key))
-  .map((key) => Posts[key]);
+  .map((key) => Posts[key])
+  .filter(post => post);
+
+assertPostTokens(allPosts);
 
 export const SiteContents = (
   <>
-    <main>
+    <div>
       {Intro}
       <Template id="posts">
-        {posts}
+        {
+          allPosts.map(async post => {
+            return (
+              <div class="post-item">
+                <h2><a href={post.options.path}>{post.options.title}</a></h2>
+                <p>
+                  <em>{post.options.date}</em>
+                </p>
+                <div class="quote">
+                  {post.options.summary}
+                </div>
+              </div>
+            )
+          })
+        }
       </Template>
-      <footer>
-        <h4>Licence</h4>
-        <p>
-          This website and <a href="https://github.com/fabiancook/fabiancook.dev" target="_blank" rel="noopener noreferrer">associated GitHub respository</a> is licensed under the <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener noreferrer">CC0 1.0 Universal</a> license.
-        </p>
-      </footer>
-    </main>
+    </div>
   </>
 );

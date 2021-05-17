@@ -1,6 +1,9 @@
 import { createToken, TokenVNodeFn, TokenVNodeBase, VNode } from '@opennetwork/vnode';
 
 export interface PostOptions {
+  title?: string;
+  summary?: string;
+  date?: string;
   path: string;
 }
 export const PostSymbol = Symbol("Post");
@@ -10,7 +13,9 @@ export const Post: PostTokenFn = createToken(PostSymbol);
 
 export function assertPostTokens(nodes: VNode[]): asserts nodes is PostToken[] {
   for (const node of nodes) {
-    Post.assert(node);
+    if (!(Post.is(node) || Post.isFn(node.source))) {
+      throw new Error("Expected Post")
+    }
   }
 }
 

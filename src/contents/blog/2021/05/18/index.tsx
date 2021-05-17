@@ -2,9 +2,10 @@ import { Post, Title, Summary } from "../../../post";
 import { h } from "../../../../../h";
 import { merge as union } from '@opennetwork/progressive-merge';
 import { Unbound } from '../../../../../unbound';
+import { Template } from '../../../../../template';
 
 export const ConcurrentUnions20210518 = (
-  <Post path="/2021/05/18/concurrent-unions">
+  <Post title="Concurrent Unions" date="18th May 2021" path="/2021/05/18/concurrent-unions" summary="Creating a union of multiple async iterators">
     <h1><Title>Concurrent Unions</Title></h1>
     <p>
       <em>18th May 2021</em>

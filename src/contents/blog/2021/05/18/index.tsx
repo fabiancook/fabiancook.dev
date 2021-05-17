@@ -150,7 +150,7 @@ async function wait() {
       </p>
       <p>
         If we have at least one result produced from with <span class="code">promises</span>
-        &nbsp;, and we have no <span class="code">errors.length</span>
+        , and we have no <span class="code">errors.length</span>
         &nbsp;then we have the next set of updated values, we clone these before
         returning and reset our working <span class="code">results</span> array
       </p>
@@ -162,7 +162,7 @@ return cloned;`}
       <h3>The second wait</h3>
       <p>
         If we didn't have at least one result in the previous step, then before
-        we move on to returning our results then we want to wait until
+        we move on to returning our results we want to wait until:
       </p>
       <ol>
         <li>At least one promise has finished</li>
@@ -170,14 +170,14 @@ return cloned;`}
         <li>A new iterator is known and should be added to our promise set</li>
       </ol>
       <p>
-        Now, we are in a complete holding state until we have at least one
+        Now, we are in a complete holding state until at least one
         thing changes within our context, this allows tasks to take longer than
         a microtask, for example the usage of <span class="code">setTimeout</span>
       </p>
       <h3>Yielding a result</h3>
       <p>
-        Now that I had a set of values that represented the next state, externally
-        from the above <span class="code">wait</span> function I could
+        Now that we have a set of values that represented the next state, externally
+        from the above <span class="code">wait</span> function we can
         freely store a copy of the latest state for all iterators, and update
         it with every iteration, yielding to the consumers the newly snapshot
         state.
@@ -201,7 +201,7 @@ if (!valuesDone) {
       </p>
       <ul>
         <li>The snapshot follows the same order as the initial input</li>
-        <li>An iteration result may appear more than once</li>
+        <li>A source iteration result may appear more than once</li>
         <li>Only snapshots with new results will yield</li>
       </ul>
       <p>
@@ -215,7 +215,8 @@ if (!valuesDone) {
         The resulting union can be consumed using <span class="code"><a rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of" target="_blank">for await</a></span>
       </p>
       <p>
-        Say we had two generator functions producing a value from an array at different rates
+        Say we had two generator functions producing a value from an array at different rates, defined
+        by the below code:
       </p>
       <pre class="code">
     {`
@@ -254,7 +255,7 @@ for await(const [left, right] of union([
         After minor performance testing I found this code to perform well under
         pressure, utilising it as a core pillar of the benchmarked code
         I was able to push a single Node.js process to utilise over <a rel="noopener" href="https://twitter.com/FabianCook/status/1390954150121250823" target="_blank">three billion</a>
-        &nbsp;promises resolving each before safely exiting.
+        &nbsp;promises, resolving each before safely exiting.
       </p>
       <p>
         This code produced consistent promise and microtask counts across many executions,

@@ -69,7 +69,8 @@ export const ConcurrentUnions20210518 = (
         suited a just in time model better.
       </p>
       <p>
-        All was not lost though, because this led me to the current pattern
+        All was not lost though, because this led me to the pattern I now utilise
+        extensively.
       </p>
       <h2>The union</h2>
       <p>

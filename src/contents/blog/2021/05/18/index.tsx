@@ -118,7 +118,7 @@ async function wait() {
       <h3>Setup</h3>
       <p>
         First within our function we can assume that we already have our
-        known in flight iterators, this is named <span class="code">pendingLanes</span>
+        known in flight iterators, this is named <span class="code">knownIterators</span>
         &nbsp;here.
       </p>
       <p>

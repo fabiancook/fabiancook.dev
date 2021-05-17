@@ -11,7 +11,7 @@ export const ConcurrentUnions20210518 = (
     </p>
     <div class="quote">
       <Summary>
-        Creating a union of multiple <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator" target="_blank">async iterators</a>
+        Creating a union of multiple <a rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/asyncIterator" target="_blank">async iterators</a>
       </Summary>
     </div>
     <section>
@@ -27,9 +27,9 @@ export const ConcurrentUnions20210518 = (
       <h2>Pushing one by one</h2>
       <p>
         I had initially implemented a <span class="code">class</span> that
-        provided a <span class="code"><a target="_blank" href="https://github.com/opennetwork/iterable/blob/b640b82c0746f58f1097781268ef52b41896c22f/src/core/transient-source.ts#L75">push(value)</a></span> <span class="code">function</span>,
+        provided a <span class="code"><a rel="noopener" target="_blank" href="https://github.com/opennetwork/iterable/blob/b640b82c0746f58f1097781268ef52b41896c22f/src/core/transient-source.ts#L75">push(value)</a></span> <span class="code">function</span>,
         each individual call to <span class="code">push</span> resulted in a&nbsp;
-        <a href="https://github.com/opennetwork/iterable/blob/b640b82c0746f58f1097781268ef52b41896c22f/src/core/transient-source.ts#L239" target="_blank">new iteration for consumers.</a>
+        <a rel="noopener" href="https://github.com/opennetwork/iterable/blob/b640b82c0746f58f1097781268ef52b41896c22f/src/core/transient-source.ts#L239" target="_blank">new iteration for consumers.</a>
       </p>
       <p>
         This seemed okay, but because of the new iteration per <span class="code">push</span>
@@ -47,7 +47,7 @@ export const ConcurrentUnions20210518 = (
       </p>
       <p>
         I found that I was to collect each value in an <span class="code">array</span> across the&nbsp;
-        <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide" target="_blank">microtask</a>
+        <a rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide" target="_blank">microtask</a>
         &nbsp;then after the callback for the next microtask was received
         I would take a copy of that array, reset the working array, and yield
         that new array.
@@ -57,7 +57,7 @@ export const ConcurrentUnions20210518 = (
         yet realised that I could use this as well as part of a union.
       </p>
       <p>
-        At a later point after publishing the <span class="code"><a href="https://github.com/opennetwork/microtask-collector#readme">microtask-collector</a></span>
+        At a later point after publishing the <span class="code"><a rel="noopener" href="https://github.com/opennetwork/microtask-collector#readme">microtask-collector</a></span>
         &nbsp;module I found that I could start many async producers and collect
         everything within the same batch and yield non-overlapping groups of
         results.
@@ -203,14 +203,14 @@ if (!valuesDone) {
         <li>Only snapshots with new results will yield</li>
       </ul>
       <p>
-        The second point shows as <a href="https://lamport.azurewebsites.net/tla/advanced.html?unhideBut=hide-stuttering&unhideDiv=stuttering" target="_blank">stuttering steps</a>
+        The second point shows as <a rel="noopener" href="https://lamport.azurewebsites.net/tla/advanced.html?unhideBut=hide-stuttering&unhideDiv=stuttering" target="_blank">stuttering steps</a>
         &nbsp;to a consumer. If the source values are unique the consumer can freely
         ignore values it already knows, allowing for the implementation to
         freely provide maximum consistency.
       </p>
       <h3>Consuming</h3>
       <p>
-        The resulting union can be consumed using <span class="code"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of" target="_blank">for await</a></span>
+        The resulting union can be consumed using <span class="code"><a rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of" target="_blank">for await</a></span>
       </p>
       <p>
         Say we had two generator functions producing a value from an array at different rates
@@ -251,7 +251,7 @@ for await(const [left, right] of union([
       <p>
         After minor performance testing I found this code to perform well under
         pressure, utilising it as a core pillar of the benchmarked code
-        I was able to push a single Node.js process to utilise over <a href="https://twitter.com/FabianCook/status/1390954150121250823" target="_blank">three billion</a>
+        I was able to push a single Node.js process to utilise over <a rel="noopener" href="https://twitter.com/FabianCook/status/1390954150121250823" target="_blank">three billion</a>
         &nbsp;promises resolving each before safely exiting.
       </p>
       <p>

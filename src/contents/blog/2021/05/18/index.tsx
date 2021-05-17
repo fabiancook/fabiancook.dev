@@ -263,7 +263,7 @@ for await(const [left, right] of union([
     <footer>
       <em>
         The source code for this blog post can be found at&nbsp;
-        <a href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2021/05/18/index.tsx">github.com/fabiancook/fabiancook.dev</a>
+        <a target="_blank" rel="noopener" href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2021/05/18/index.tsx">github.com/fabiancook/fabiancook.dev</a>
       </em>
     </footer>
   </Post>

@@ -1,7 +1,7 @@
 {
   "name": "fabiancook.dev",
   "private": true,
-  "license": "MIT",
+  "license": "CC-0",
   "type": "module",
   "scripts": {
     "start": "snowpack dev",

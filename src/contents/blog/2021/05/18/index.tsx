@@ -259,6 +259,13 @@ for await(const [left, right] of union([
         showing it allows for deterministic just in time execution within JavaScript.
       </p>
     </section>
+    <hr />
+    <footer>
+      <em>
+        The source code for this blog post can be found at&nbsp;
+        <a href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2021/05/18/index.tsx">github.com/fabiancook/fabiancook.dev</a>
+      </em>
+    </footer>
   </Post>
 )
 

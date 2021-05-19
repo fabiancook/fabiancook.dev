@@ -20,6 +20,7 @@ export default {
     /* Example: Bundle your final build: */
     bundle: true,
     minify: true,
+    splitting: true,
     target: "es2018",
     entrypoints: [
       "index.html"

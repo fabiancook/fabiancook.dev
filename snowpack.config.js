@@ -22,8 +22,7 @@ export default {
     minify: true,
     target: "es2018",
     entrypoints: [
-      "index.html",
-      "2021/05/18/concurrent-unions.html"
+      "index.html"
     ]
   },
   packageOptions: {

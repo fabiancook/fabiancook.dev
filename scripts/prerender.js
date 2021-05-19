@@ -1,50 +1,165 @@
-import "./jsdom.js";
+import {redeclare} from "./jsdom.js";
 import { promises as fs } from "node:fs";
 import { dirname, join } from 'node:path';
-import JSDOM from "jsdom";
+import JSDOM from 'jsdom';
+import config from "../snowpack.config.js";
+import mkdirp from "mkdirp";
 
-// Create a new root element
-const root = document.createElement("div");
-root.id = "root";
-
-// No harm in appending our root to the document body
-document.body.append(root);
-
-// This will initialise our sites render
-await import("../build/index.js");
-
-// The bundler does not have top level await support, so we must utilise the global
-// the above import sets
-await window.proposalSiteRender;
+const path = "../build";
 
 const directory = dirname(new URL(import.meta.url).pathname);
 
-const indexPath = join(directory, "../build/index.html");
-const index = await fs.readFile(indexPath, "utf8");
+const { name } = JSON.parse(await fs.readFile(join(directory, "../package.json"), "utf-8"))
 
-const target = new JSDOM.JSDOM(index);
+global.setTimeout = queueMicrotask;
 
-// Copy over generated templates
-const template = document.createElement("template");
-const foundTemplates = document.body.querySelectorAll("template[id]");
+let knownPaths = new Set(config.optimize.entrypoints);
+let renderedPaths = new Set();
 
-// Remove any existing versions of the template found
-for (const foundTemplate of foundTemplates) {
-  const existing = target.window.document.getElementById(foundTemplate.id);
-  if (existing) {
-    existing.parentElement.removeChild(existing);
-  }
-  template.content.append(foundTemplate);
+function getRemainingPaths() {
+  return new Set([...knownPaths].filter(path => !renderedPaths.has(path)));
 }
 
-// Create a template in our target DOM and then copy over using an HTML string
-// then append these to the targets body using the target templates DocumentFragment
-const targetTemplate = target.window.document.createElement("template");
-targetTemplate.innerHTML = template.innerHTML;
-target.window.document.body.append(targetTemplate.content);
+let remainingPaths;
+while ((remainingPaths = getRemainingPaths()).size) {
+  const entry = remainingPaths[Symbol.iterator]().next().value;
 
-// Write to disk
-await fs.writeFile(
-  indexPath,
-  target.serialize()
-)
+  const url = new URL(
+    `/${entry}`
+      .replace(/^\/+/, "/")
+      .replace(/\.html$/, "")
+      .replace(/\/index$/, "/"),
+    `https://${name}`
+  );
+
+  console.log(url, url.toString());
+
+  const dom = new JSDOM.JSDOM("", {
+    url: url.toString()
+  });
+  redeclare(dom);
+
+  // Create a new root element
+  const root = dom.window.document.querySelector("#root") ?? dom.window.document.createElement("div");
+  root.id = "root";
+
+  // Appending our root to the document body
+  dom.window.document.body.append(root);
+
+  // This will initialise our sites render
+  const { render } = await import("../build/render.js");
+
+  await render();
+
+  // The snowpack bundler does not have top level await support, so we must utilise the global
+  // the above import sets
+  await dom.window.siteRender;
+
+  let entryPath = join(directory, path, entry);
+
+  async function isFile(path) {
+    return (await fs.stat(path).catch(() => undefined))?.isFile() ?? false;
+  }
+
+  async function getEntryPathFile(entryPath) {
+    if (!await isFile(entryPath)) {
+      if (await isFile(join(entryPath, "index.html"))) {
+        return join(entryPath, "index.html");
+      } else if (await isFile(`${entryPath}.html`)) {
+        entryPath = `${entryPath}.html`;
+      }
+    }
+    return entryPath;
+  }
+
+  let outputPath = entryPath;
+  if (!/\.html$/.test(outputPath)) {
+    if (outputPath.endsWith("/")) {
+      outputPath = `${outputPath}index.html`;
+    } else {
+      outputPath = `${outputPath}.html`;
+    }
+  }
+
+  entryPath = await getEntryPathFile(entryPath);
+  if (!await isFile(entryPath)) {
+    const defaultPath = join(directory, path, config.optimize.entrypoints[0]);
+    // The default entry point
+    entryPath = await getEntryPathFile(defaultPath);
+  }
+  const entryContents = await fs.readFile(entryPath, "utf8");
+  const target = new JSDOM.JSDOM(entryContents);
+
+  const targetRoot = target.window.document.querySelector("#root") ?? target.window.document.createElement("div");
+  targetRoot.id = "root";
+  targetRoot.innerHTML = root.innerHTML;
+
+  // Copy over generated templates
+  const template = document.createElement("template");
+  const foundTemplates = document.body.querySelectorAll("template[id]");
+
+  const links = new Set();
+
+  // Remove any existing versions of the template found
+  for (const foundTemplate of foundTemplates) {
+    const existing = target.window.document.getElementById(foundTemplate.id);
+    if (existing) {
+      existing.parentElement.removeChild(existing);
+    }
+    template.content.append(foundTemplate);
+  }
+
+
+  // Create a template in our target DOM and then copy over using an HTML string
+  // then append these to the targets body using the target templates DocumentFragment
+  const targetTemplate = target.window.document.createElement("template");
+  targetTemplate.innerHTML = template.innerHTML;
+  target.window.document.body.append(targetTemplate.content);
+
+  const toRemove = new Set();
+  target.window.document.querySelectorAll("[data-remove-after-prerender]")
+    .forEach(node => toRemove.add(node));
+  dom.window.document.querySelectorAll("meta[name]")
+    .forEach((node) => {
+      target.window.document.querySelectorAll(`meta[name="${node.name}"]`)
+        .forEach(node => toRemove.add(node));
+    });
+  for (const remove of toRemove) {
+    remove.parentNode.removeChild(remove);
+  }
+
+  target.window.document.title = dom.window.document.title || target.window.document.title;
+  target.window.document.querySelectorAll(`[href]`)
+    .forEach(node => links.add(node.getAttribute("href")));
+
+  const metaTemplate = target.window.document.createElement("template");
+  dom.window.document.head.querySelectorAll(`meta[name]`)
+    .forEach(node => {
+      target.window.document.adoptNode(node);
+      metaTemplate.content.append(node);
+    });
+  target.window.document.head.append(metaTemplate.content);
+
+
+  for (const link of links) {
+    // Non extension links only
+    if (/^(\/[a-z0-9-_]+)+$/i.test(link)) {
+      // Add new paths to render
+      knownPaths.add(link);
+    }
+  }
+
+  // Clear body so render can re-run and templates will be utilised
+  targetRoot.innerHTML = "";
+
+  await mkdirp(dirname(outputPath));
+
+  // Write to disk
+  await fs.writeFile(
+    outputPath,
+    target.serialize()
+  )
+
+  renderedPaths.add(entry);
+}
+

@@ -1,4 +1,4 @@
-import { createNode, Source, VNode, VNodeRepresentationSource, Fragment } from "@opennetwork/vnode";
+import { createNode, Source, VNode, VNodeRepresentationSource, Fragment, isTokenVNodeFn } from '@opennetwork/vnode';
 import {
   isGetDocumentNodeOptions,
   isNativeOptions,
@@ -7,8 +7,13 @@ import {
   isAttributesOptions
 } from "@opennetwork/vdom";
 
-export function h<O extends object = object>(source: Source<O>, options?: O, ...children: VNodeRepresentationSource[]): VNode
+export function h<O extends object = object>(source: Source<O> | VNode, options?: O, ...children: VNodeRepresentationSource[]): VNode
 export function h(source: Source<object>, options?: object, ...children: VNodeRepresentationSource[]): VNode {
+
+  if (isTokenVNodeFn(source)) {
+    return h(source(options), options, ...children);
+  }
+
   if (source === "fragment") {
     return h(Fragment, options, ...children);
   }

@@ -3,14 +3,12 @@ import { Intro } from "./intro";
 import * as Posts from "./blog";
 import { Template } from '../template';
 import { createFragment } from '@opennetwork/vnode';
-import { assertPostTokens, Post, Summary, Title } from './blog/post';
+import { assertPostTokens, Post, PostToken } from './blog/post';
 
 const allPosts = Object.keys(Posts)
   .filter((key: string): key is keyof typeof Posts => Object.prototype.hasOwnProperty.call(Posts, key))
   .map((key) => Posts[key])
-  .filter(post => post);
-
-assertPostTokens(allPosts);
+  .filter((post): post is PostToken => Post.is(post));
 
 export const SiteContents = (
   <>

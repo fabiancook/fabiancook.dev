@@ -286,7 +286,7 @@ async function *TimedGeneratorExample() {
     timedGenerator([1, 2, 3], 500),
     timedGenerator([5, 6, 7], 1000)
   ])) {
-    console.log({ left, right });
+    // console.log({ left, right });
     yield JSON.stringify({ left, right });
   }
 }

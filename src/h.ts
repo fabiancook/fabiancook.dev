@@ -1,11 +1,11 @@
-import { createNode, Source, VNode, VNodeRepresentationSource, Fragment, isTokenVNodeFn } from '@opennetwork/vnode';
+import { createNode, Source, VNode, VNodeRepresentationSource, Fragment, isTokenVNodeFn } from '@virtualstate/x';
 import {
   isGetDocumentNodeOptions,
   isNativeOptions,
   NativeOptions,
   isOnBeforeRenderOptions,
   isAttributesOptions
-} from "@opennetwork/vdom";
+} from "@virtualstate/dom";
 
 export function h<O extends object = object>(source: Source<O> | VNode, options?: O, ...children: VNodeRepresentationSource[]): VNode
 export function h(source: Source<object>, options?: object, ...children: VNodeRepresentationSource[]): VNode {

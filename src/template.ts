@@ -1,7 +1,5 @@
-import { VNode } from '@opennetwork/vnode';
-import { DocumentNode, isElement, isExpectedNode, NativeOptionsVNode, render } from '@opennetwork/vdom';
-import { ElementDOMNativeVNode } from '@opennetwork/vdom/dist/element';
-import { deferred } from './contents/defer';
+import { VNode } from '@virtualstate/x';
+import { isElement, NativeOptionsVNode, render } from '@virtualstate/dom';
 
 export async function Templates() {
 

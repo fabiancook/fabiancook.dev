@@ -1,8 +1,6 @@
-import { Title, Summary } from "../../../post";
 import { h } from "../../../../../h";
-import { merge as union } from '@opennetwork/progressive-merge';
+import { union } from '@virtualstate/x';
 import { Unbound } from '../../../../../unbound';
-import { createFragment } from '@opennetwork/vnode';
 
 export default (
   <section>

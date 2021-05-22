@@ -1,8 +1,7 @@
-import { render as dom, DOMVContext, createTimeline, Timeline } from '@opennetwork/vdom';
+import { render as dom, DOMVContext, createTimeline, Timeline } from '@virtualstate/dom';
 import { SiteBody } from './site';
 import { ConcurrentUnions20210518 } from './contents/blog';
 import { h } from "./h";
-import { hookFragments } from '@opennetwork/vnode-fragment';
 import { Template } from './template';
 
 export async function render() {
@@ -60,7 +59,7 @@ export async function render() {
     }
 
     await dom(
-      await hookFragments()((
+      (
         <main>
             {site}
             <footer>
@@ -70,7 +69,7 @@ export async function render() {
                 </p>
             </footer>
         </main>
-      )),
+      ),
       context
     );
 

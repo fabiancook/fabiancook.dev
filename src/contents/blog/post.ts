@@ -1,4 +1,4 @@
-import { createToken, TokenVNodeFn, TokenVNodeBase, VNode } from '@opennetwork/vnode';
+import { createToken, TokenVNodeFn, TokenVNodeBase, VNode } from '@virtualstate/x';
 
 export interface PostOptions {
   title?: string;

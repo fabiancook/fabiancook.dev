@@ -2,7 +2,7 @@ import { h } from "../h";
 import { Intro } from "./intro";
 import * as Posts from "./blog";
 import { Template } from '../template';
-import { createFragment } from '@opennetwork/vnode';
+import { createFragment } from '@virtualstate/x';
 import { assertPostTokens, Post, PostToken } from './blog/post';
 
 const allPosts = Object.keys(Posts)

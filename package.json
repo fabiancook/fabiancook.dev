@@ -16,12 +16,9 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "@opennetwork/progressive-merge": "^5.2.0",
-    "@opennetwork/vdom": "^20.1.0",
-    "@opennetwork/vdom-react": "^5.0.1",
-    "@opennetwork/vnode": "^27.1.0",
-    "@opennetwork/vnode-fragment": "^7.0.0",
-    "@opennetwork/vnode-hooks": "^7.0.0",
+    "@virtualstate/dom": "^0.0.14-alpha.0",
+    "@virtualstate/hooks-extended": "^0.0.14-alpha.0",
+    "@virtualstate/x": "^0.0.14-alpha.0",
     "fp-ts": "^2.10.4",
     "io-ts": "^2.2.16",
     "iterable": "^5.7.0",

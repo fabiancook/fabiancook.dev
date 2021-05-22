@@ -1,5 +1,5 @@
 import { h } from '../h';
-import { createFragment } from '@opennetwork/vnode';
+import { createFragment } from '@virtualstate/x';
 import { Template } from '../template';
 
 export const Intro = (

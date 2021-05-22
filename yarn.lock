@@ -125,10 +125,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@virtualstate/dom@^0.0.14-alpha.0":
-  version "0.0.14-alpha.0"
-  resolved "https://registry.npmjs.org/@virtualstate/dom/-/dom-0.0.14-alpha.0.tgz#95742e2f500cb94d39151907231359b95918aadc"
-  integrity sha512-03wn29L43PUxJOiIn19EBUuysy83o6goN856g2Bc8GRK62vbxgzOQVtVr02awLtJdV62cRj8ll7wgJ6iSiSbBA==
+"@virtualstate/dom@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@virtualstate/dom/-/dom-1.0.0.tgz#552030574bf817ec9543b76fdd1064d35f8a74f6"
+  integrity sha512-qDd+SpBULqOZof1K58DBLuZ8q3xHQQPlxM1tjR+MDnNLK5kNP1UCZ6AzyFvhpQGn4V/U4I2TAVl2YvJfPL1urw==
 
 "@virtualstate/fringe@^0.0.11-alpha.0":
   version "0.0.11-alpha.0"
@@ -150,10 +150,10 @@
   resolved "https://registry.npmjs.org/@virtualstate/union/-/union-0.0.11-alpha.0.tgz#328886d648e4ebd24146ffaa21925a9fb8b15579"
   integrity sha512-4zgIW/ukkV+2LPgqBCgkTG1F4ZZRgvvY6YFYo/zj4+6tpBUZPRLAZGLZEvKBaEZboy51ZAVRhblDG3HoO59QYg==
 
-"@virtualstate/x@^0.0.14-alpha.0":
-  version "0.0.14-alpha.0"
-  resolved "https://registry.npmjs.org/@virtualstate/x/-/x-0.0.14-alpha.0.tgz#eda4275e3d7fa5fd068142833bf026b3709ed191"
-  integrity sha512-MTpSKec5S46mr4YQBq7W9cu2qnvHm0q6YrKMPZK3yQ1lccwx6Jc2iDRjGyP0jtggacpbv3Px96HE1cEdzXqqaQ==
+"@virtualstate/x@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@virtualstate/x/-/x-1.0.0.tgz#597540002fc785d84c316ad4b186df74a6ab76c7"
+  integrity sha512-JhTkQAMs8RoTXimCe3PxzI0mTLFAc/LEyIhRz+3/R4yFHq+ijCuHZegClTbN1nv2TZXooafaCWfA8xgnkORL/w==
   dependencies:
     "@virtualstate/fringe" "^0.0.11-alpha.0"
     "@virtualstate/hooks" "^0.0.11-alpha.0"

@@ -1,6 +1,6 @@
 import { render as dom, DOMVContext, createTimeline, Timeline } from '@virtualstate/dom';
 import { SiteBody } from './site';
-import { ConcurrentUnions20210518 } from './contents/blog';
+import { Posts } from './contents/blog';
 import { h } from "./h";
 import { Template } from './template';
 
@@ -25,13 +25,11 @@ export async function render() {
 
     let site = <SiteBody />;
     let templateSite = false;
-
-    switch (url.pathname.replace(/\/+$/, "")) {
-        case "/2021/05/18/concurrent-unions": {
-            templateSite = true;
-            site = ConcurrentUnions20210518;
-            break;
-        }
+    const postPathName = url.pathname.replace(/\/+$/, "");
+    const foundPost = Posts.find(post => postPathName === post.options.path)
+    if (foundPost) {
+        templateSite = true;
+        site = foundPost;
     }
 
     if (site.options?.title) {
@@ -39,7 +37,6 @@ export async function render() {
     }
 
     const descriptionContent = site.options?.description ?? site.options?.summary;
-    console.log({ descriptionContent, o: site.options });
     if (descriptionContent) {
         let description: HTMLMetaElement | undefined = document.head.querySelector<HTMLMetaElement>("meta[name=description]") ?? undefined;
         if (!description) {

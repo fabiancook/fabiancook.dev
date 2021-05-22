@@ -249,6 +249,11 @@ for await(const [left, right] of union([
       &nbsp;promises, resolving each before safely exiting.
     </p>
     <p>
+      A <a rel="noopener" target="_blank" href="https://codesandbox.io/s/agitated-minsky-rbnuc?file=/src/index.ts">live demo can be found on
+      codesandbox</a>, or alternatively checkout the <a rel="noopener" target="_blank" href="https://github.com/virtualstate/x/tree/main/packages/union">the source code</a>
+      &nbsp;or the <a rel="noopener" target="_blank" href="https://www.npmjs.com/package/@virtualstate/union">npm package</a>
+    </p>
+    <p>
       This code produced consistent promise and microtask counts across many executions,
       showing it allows for deterministic just in time execution within JavaScript.
     </p>

@@ -18,9 +18,10 @@ export default {
   ],
   optimize: {
     /* Example: Bundle your final build: */
-    bundle: true,
     minify: true,
+    bundle: true,
     splitting: true,
+    sourcemap: "external",
     target: "es2018",
     entrypoints: [
       "index.html"

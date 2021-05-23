@@ -62,19 +62,19 @@ for await (const results of children) {
 import { h } from "@virtualstate/x";
 
 function Fn() {
-  return "Function";
+  return "Function ✨";
 }
 async function AsyncFn() {
-  await new Promise(queueMicrotask);
-  return "Async Function";
+  await new Promise<void>(queueMicrotask);
+  return "Async Function 💡";
 }
 function *GeneratorFn() {
   yield "GeneratorFn Loading";
-  yield "GeneratorFn";
+  yield "GeneratorFn 💥";
 }
 async function *AsyncGeneratorFn() {
   yield "AsyncGeneratorFn Loading";
-  yield "AsyncGeneratorFn";
+  yield "AsyncGeneratorFn 🔥";
 }
 function Fns() {
   return [

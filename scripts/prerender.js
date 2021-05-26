@@ -78,6 +78,8 @@ while ((remainingPaths = getRemainingPaths()).size) {
   const socket = createConnection(3001);
   let noOp = false;
   socket.on("error", () => noOp = true);
+  socket.on("close", () => noOp = true);
+  process.once("uncaughtException", () => noOp = true);
   dom.window.operation = async function operation(symbol) {
     if (typeof symbol !== "symbol") return;
     if (noOp) return;
@@ -90,7 +92,13 @@ while ((remainingPaths = getRemainingPaths()).size) {
       padded.set(Buffer.alloc(100, 1), 0);
       padded.set(Buffer.from(symbol.toString()), 0);
       padded.set(digest, 100);
-      await new Promise(resolve => socket.write(padded, resolve));
+      await new Promise(resolve => socket.write(padded, (error) => {
+        if (error) {
+          noOp = true;
+          return;
+        }
+        resolve();
+      }));
     });
   }
 

@@ -76,9 +76,13 @@ while ((remainingPaths = getRemainingPaths()).size) {
 
 
   const socket = createConnection(3001);
+  let noOp = false;
+  socket.on("error", () => noOp = true);
   dom.window.operation = async function operation(symbol) {
     if (typeof symbol !== "symbol") return;
+    if (noOp) return;
     return someQueue = someQueue.then(async () => {
+      if (noOp) return;
       const hash = createHash("sha256");
       hash.update(symbol.toString());
       const digest = hash.digest();

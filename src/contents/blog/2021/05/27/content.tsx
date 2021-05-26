@@ -4,7 +4,7 @@ import { isScalarVNode, VNode } from '@virtualstate/x';
 export default (
   <section>
     <DoThings>
-      <Things global={10} internal={1} />
+      <Things global={1000} internal={1} />
     </DoThings>
   </section>
 )

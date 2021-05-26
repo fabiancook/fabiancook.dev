@@ -8,20 +8,33 @@ export const SiteContents = (
     {Intro}
     <Template id="posts">
       {
-        OrderedPosts.map(async post => {
-          return (
-            <div class="post-item">
-              <h2><a href={post.options.path}>{post.options.title}</a></h2>
-              <p>
-                <em>{post.options.date}</em>
-              </p>
-              <div class="quote">
-                {post.options.summary}
+        OrderedPosts
+          .filter(post => !post.options.draft)
+          .map(async post => {
+            return (
+              <div class="post-item">
+                <h2><a href={post.options.path}>{post.options.title}</a></h2>
+                <p>
+                  <em>{post.options.date}</em>
+                </p>
+                <div class="quote">
+                  {post.options.summary}
+                </div>
               </div>
-            </div>
-          )
-        })
+            )
+          })
       }
+      <div hidden class="drafts">
+        {
+          OrderedPosts
+            .filter(post => post.options.draft)
+            .map(async post => {
+              return (
+                <a href={post.options.path}>{post.options.title}</a>
+              )
+            })
+        }
+      </div>
     </Template>
   </div>
 );

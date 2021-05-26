@@ -5,6 +5,7 @@ export interface PostOptions {
   summary?: string;
   date?: string;
   path: string;
+  draft?: boolean;
 }
 export const PostSymbol = Symbol("Post");
 export type PostToken = TokenVNodeBase<typeof PostSymbol, PostOptions>;

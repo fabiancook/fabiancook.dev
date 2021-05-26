@@ -4,6 +4,17 @@ import { dirname, join } from 'node:path';
 import JSDOM from 'jsdom';
 import config from "../snowpack.config.js";
 import mkdirp from "mkdirp";
+import { PerformanceObserver, performance } from "perf_hooks";
+import { Worker, isMainThread, parentPort } from "worker_threads";
+import { createHook } from "async_hooks";
+import { createConnection } from "net";
+import { createHash } from 'crypto';
+
+const obs = new PerformanceObserver((items) => {
+  console.log(items.getEntries());
+  performance.clearMarks();
+});
+obs.observe({ entryTypes: ['measure'] });
 
 const path = "../build";
 
@@ -32,7 +43,22 @@ while ((remainingPaths = getRemainingPaths()).size) {
     `https://${name}`
   );
 
+
+  const types = new Map();
+  let count = 0n;
+  let resolved = 0n;
+  createHook({
+    init(asyncId, type) {
+      count += 1n;
+      types.set(type, (types.get(type) || 0n) + 1n);
+    },
+    promiseResolve(asyncId) {
+      resolved += 1n;
+    }
+  }).enable();
+
   console.log(url, url.toString());
+  performance.mark('A');
 
   const dom = new JSDOM.JSDOM("", {
     url: url.toString()
@@ -46,10 +72,32 @@ while ((remainingPaths = getRemainingPaths()).size) {
   // Appending our root to the document body
   dom.window.document.body.append(root);
 
+  let someQueue = Promise.resolve();
+
+
+  const socket = createConnection(3001);
+  dom.window.operation = async function operation(symbol) {
+    if (typeof symbol !== "symbol") return;
+    return someQueue = someQueue.then(async () => {
+      const hash = createHash("sha256");
+      hash.update(symbol.toString());
+      const digest = hash.digest();
+      const padded = Buffer.alloc(1024, 1);
+      padded.set(Buffer.alloc(100, 1), 0);
+      padded.set(Buffer.from(symbol.toString()), 0);
+      padded.set(digest, 100);
+      await new Promise(resolve => socket.write(padded, resolve));
+    });
+  }
+
   // This will initialise our sites render
   const { render } = await import("../build/render.js");
 
   await render();
+  performance.mark('B');
+  performance.measure(`A to B`, 'A', 'B');
+  console.log({ count, resolved, types });
+  await new Promise(resolve => socket.end(resolve));
 
   // The snowpack bundler does not have top level await support, so we must utilise the global
   // the above import sets

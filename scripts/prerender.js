@@ -8,7 +8,8 @@ import { PerformanceObserver, performance } from "perf_hooks";
 import { Worker, isMainThread, parentPort } from "worker_threads";
 import { createHook } from "async_hooks";
 import { createConnection } from "net";
-import { createHash } from 'crypto';
+import { createHash, randomBytes } from 'crypto';
+import { promisify } from 'util';
 
 const obs = new PerformanceObserver((items) => {
   console.log(items.getEntries());
@@ -74,21 +75,44 @@ while ((remainingPaths = getRemainingPaths()).size) {
 
   let someQueue = Promise.resolve();
 
+  function envNumber(key, def, decimalOrNah, bitInt) {
+    const value = process.env[key];
+    if (decimalOrNah && /^\d+\.\d+$/.test(value)) {
+      return +value;
+    }
+    const isInt = /^\d+$/.test(value);
+    if (isInt && bitInt) {
+      return BigInt(value);
+    } else if (isInt) {
+      return +value;
+    }
+    return def;
+  }
+  const socketPort = envNumber("OPERATION_SOCKET_PORT");
+  dom.window.scale = envNumber("OPERATION_SCALE", 1);
+  dom.window.scaleWidth = envNumber("OPERATION_SCALE_WIDTH", 1);
+  dom.window.scaleBigInt = envNumber("OPERATION_SCALE", 1n, false, true);
+  dom.window.scaleWidthBigInt = envNumber("OPERATION_SCALE_WIDTH", 1n, false, true);
 
-  const socket = createConnection(3001);
-  let noOp = false;
-  socket.on("error", () => noOp = true);
-  socket.on("close", () => noOp = true);
-  process.once("uncaughtException", () => noOp = true);
+  const socket = socketPort ? createConnection(socketPort) : undefined;
+  let noOp = !socket;
+  socket?.on("error", () => noOp = true);
+  socket?.on("close", () => noOp = true);
+  if (!noOp) {
+    process.once("uncaughtException", () => noOp = true);
+  }
+  const seen = new Set();
   dom.window.operation = async function operation(symbol) {
     if (typeof symbol !== "symbol") return;
+    if (seen.has(symbol)) return;
+    seen.add(symbol);
     if (noOp) return;
     return someQueue = someQueue.then(async () => {
       if (noOp) return;
       const hash = createHash("sha256");
       hash.update(symbol.toString());
       const digest = hash.digest();
-      const padded = Buffer.alloc(1024, 1);
+      const padded = await promisify(randomBytes)(2.5 * 1024 * 1024);
       padded.set(Buffer.alloc(100, 1), 0);
       padded.set(Buffer.from(symbol.toString()), 0);
       padded.set(digest, 100);
@@ -109,7 +133,10 @@ while ((remainingPaths = getRemainingPaths()).size) {
   performance.mark('B');
   performance.measure(`A to B`, 'A', 'B');
   console.log({ count, resolved, types });
-  await new Promise(resolve => socket.end(resolve));
+
+  if (socket) {
+    await promisify(socket.end).call(socket);
+  }
 
   // The snowpack bundler does not have top level await support, so we must utilise the global
   // the above import sets

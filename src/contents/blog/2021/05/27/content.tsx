@@ -4,7 +4,7 @@ import { isScalarVNode, VNode } from '@virtualstate/x';
 export default (
   <section>
     <DoThings>
-      <Things global={1000} internal={1} />
+      <Things global={window.scale ?? 1000} internal={window.scaleWidth ?? 1} />
     </DoThings>
   </section>
 )
@@ -29,7 +29,7 @@ async function DoThings(o: unknown, state: VNode) {
       );
     }
   }
-  console.log({ totalEvents });
+  console.log({ totalEvents, seen: seen.size });
 }
 
 interface ThingOptions {

@@ -94,6 +94,7 @@ while ((remainingPaths = getRemainingPaths()).size) {
   dom.window.scaleBigInt = envNumber("OPERATION_SCALE", 1n, false, true);
   dom.window.scaleWidthBigInt = envNumber("OPERATION_SCALE_WIDTH", 1n, false, true);
 
+
   const socket = socketPort ? createConnection(socketPort) : undefined;
   let noOp = !socket;
   socket?.on("error", () => noOp = true);
@@ -112,17 +113,23 @@ while ((remainingPaths = getRemainingPaths()).size) {
       const hash = createHash("sha256");
       hash.update(symbol.toString());
       const digest = hash.digest();
-      const padded = await promisify(randomBytes)(2.5 * 1024 * 1024);
+      let padded = await promisify(randomBytes)((dom.window.scaleWidth * 2.5) * 1024 * 1024);
       padded.set(Buffer.alloc(100, 1), 0);
       padded.set(Buffer.from(symbol.toString()), 0);
       padded.set(digest, 100);
-      await new Promise(resolve => socket.write(padded, (error) => {
-        if (error) {
+
+      const packetSize = 0.5 * 1024 * 1024;
+
+      while (padded.length) {
+        const next = padded.slice(0, packetSize);
+        padded = padded.slice(packetSize);
+        try {
+          await promisify(socket.write).call(socket, next);
+        } catch {
           noOp = true;
-          return;
+          break;
         }
-        resolve();
-      }));
+      }
     });
   }
 

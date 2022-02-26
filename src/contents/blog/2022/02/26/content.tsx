@@ -325,7 +325,7 @@ const object = all(asyncValues);
 `.trim()}
     </pre>
     <p>
-      The resulting repository & module used in this post can be found at
+      The resulting repository & module used in this post can be found at{" "}
       <a
         href="https://github.com/virtualstate/promise"
         target="_blank"

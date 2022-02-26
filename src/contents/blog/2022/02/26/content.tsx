@@ -271,7 +271,11 @@ for await (const state of object) {
       iterables.
     </p>
     <p>
-      <a href="https://github.com/virtualstate/promise/commit/b854229ae6ef7f624a639d15a251098c7cd50e9f#diff-91241161695e12a799702b5f738bb39e34e2fe542a0ddcc515ee630973de3573R30-R45">
+      <a
+        target="_blank"
+        rel="noopener"
+        href="https://github.com/virtualstate/promise/commit/b854229ae6ef7f624a639d15a251098c7cd50e9f#diff-91241161695e12a799702b5f738bb39e34e2fe542a0ddcc515ee630973de3573R30-R45"
+      >
         Implementing this
       </a>{" "}
       involves providing additional mapping for these extra value types, while
@@ -320,6 +324,16 @@ import { all } from "@virtualstate/promise/all";
 const object = all(asyncValues);
 `.trim()}
     </pre>
+    <p>
+      The resulting repository & module used in this post can be found at
+      <a
+        href="https://github.com/virtualstate/promise"
+        target="_blank"
+        rel="noopener"
+      >
+        github.com/virtualstate/promise
+      </a>
+    </p>
   </section>
 );
 

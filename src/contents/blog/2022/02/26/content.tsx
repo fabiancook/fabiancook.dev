@@ -17,8 +17,7 @@ export default (
       with many async generators as a group has been helpful, but not as close
       to what I would expect the large majority of JavaScript developers want.
     </p>
-    <p>A good amount of async work can be done with individual promises.</p>
-    <p>.......Some detail here?........</p>
+    <p>A good amount of async work can be done with individual promises without ever touching generators.</p>
     <p>
       As part of JavaScript, we have&nbsp;
       <a

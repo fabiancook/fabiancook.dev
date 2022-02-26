@@ -17,7 +17,10 @@ export default (
       with many async generators as a group has been helpful, but not as close
       to what I would expect the large majority of JavaScript developers want.
     </p>
-    <p>A good amount of async work can be done with individual promises without ever touching generators.</p>
+    <p>
+      A good amount of async work can be done with individual promises without
+      ever touching generators.
+    </p>
     <p>
       As part of JavaScript, we have&nbsp;
       <a
@@ -56,9 +59,10 @@ export default (
       as it happens, you're a bit out of luck with your standard tools
     </p>
     <p>
-      Using previously the mentioned union function, if we were to wrap each of
-      our promises with an async generator we could however capture these
-      statuses as they are available
+      Using previously the mentioned{" "}
+      <a href="/2021/05/18/concurrent-unions">union</a> function, if we were to
+      wrap each of our promises with an async generator we could however capture
+      these statuses as they are available
     </p>
     <pre>
       {`

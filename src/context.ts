@@ -1,7 +1,18 @@
-import { asyncHooks, source, asyncExtendedIterable, ExtendedAsyncIterable } from "iterable";
+import {
+  asyncHooks,
+  source,
+  asyncExtendedIterable,
+  ExtendedAsyncIterable,
+} from "iterable";
 import { Is } from "io-ts";
 
-export function createContext<T>(defaultValue: T, name?: string, is?: Is<T>, onRetrieveFailure?: (error?: unknown) => void, onStoreFailure?: (value: T, error?: unknown) => void): [() => ExtendedAsyncIterable<T>, (value: T) => void] {
+export function createContext<T>(
+  defaultValue: T,
+  name?: string,
+  is?: Is<T>,
+  onRetrieveFailure?: (error?: unknown) => void,
+  onStoreFailure?: (value: T, error?: unknown) => void
+): [() => ExtendedAsyncIterable<T>, (value: T) => void] {
   let currentValue: T = defaultValue;
 
   // If `name` isn't provided, we aren't using storage
@@ -33,9 +44,9 @@ export function createContext<T>(defaultValue: T, name?: string, is?: Is<T>, onR
       preferenceTriggered.set(iterator, true);
       return {
         done: false,
-        value: currentValue
+        value: currentValue,
       };
-    }
+    },
   });
 
   return [
@@ -55,6 +66,6 @@ export function createContext<T>(defaultValue: T, name?: string, is?: Is<T>, onR
           }
         }
       }
-    }
+    },
   ];
 }

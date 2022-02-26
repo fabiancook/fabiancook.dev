@@ -2,19 +2,17 @@
 export default {
   mount: {
     /* ... */
-    "src": "/",
+    src: "/",
     "src/2021/05/18": "/2021/05/18",
-    "public": "/"
+    public: "/",
   },
-  exclude: [
-    "**/node_modules/**/*",
-  ],
+  exclude: ["**/node_modules/**/*"],
   plugins: [
     /* ... */
   ],
   routes: [
     /* Enable an SPA Fallback in development: */
-    {"match": "routes", "src": ".*", "dest": "/index.html"},
+    { match: "routes", src: ".*", dest: "/index.html" },
   ],
   optimize: {
     /* Example: Bundle your final build: */
@@ -23,9 +21,7 @@ export default {
     splitting: true,
     sourcemap: "external",
     target: "es2018",
-    entrypoints: [
-      "index.html"
-    ]
+    entrypoints: ["index.html"],
   },
   packageOptions: {
     /* ... */
@@ -36,9 +32,7 @@ export default {
   buildOptions: {
     /* ... */
     jsxFactory: "h",
-    jsxFragment: "createFragment"
+    jsxFragment: "createFragment",
   },
-  env: {
-
-  }
+  env: {},
 };

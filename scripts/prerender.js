@@ -1,27 +1,29 @@
-import {redeclare} from "./jsdom.js";
+import { redeclare } from "./jsdom.js";
 import { promises as fs } from "node:fs";
-import { dirname, join } from 'node:path';
-import JSDOM from 'jsdom';
+import { dirname, join } from "node:path";
+import JSDOM from "jsdom";
 import config from "../snowpack.config.js";
 import mkdirp from "mkdirp";
 import { PerformanceObserver, performance } from "perf_hooks";
 import { Worker, isMainThread, parentPort } from "worker_threads";
 import { createHook } from "async_hooks";
 import { createConnection } from "net";
-import { createHash, randomBytes } from 'crypto';
-import { promisify } from 'util';
+import { createHash, randomBytes } from "crypto";
+import { promisify } from "util";
 
 const obs = new PerformanceObserver((items) => {
   console.log(items.getEntries());
   performance.clearMarks();
 });
-obs.observe({ entryTypes: ['measure'] });
+obs.observe({ entryTypes: ["measure"] });
 
 const path = "../build";
 
 const directory = dirname(new URL(import.meta.url).pathname);
 
-const { name } = JSON.parse(await fs.readFile(join(directory, "../package.json"), "utf-8"))
+const { name } = JSON.parse(
+  await fs.readFile(join(directory, "../package.json"), "utf-8")
+);
 
 global.setTimeout = queueMicrotask;
 
@@ -29,7 +31,7 @@ let knownPaths = new Set(config.optimize.entrypoints);
 let renderedPaths = new Set();
 
 function getRemainingPaths() {
-  return new Set([...knownPaths].filter(path => !renderedPaths.has(path)));
+  return new Set([...knownPaths].filter((path) => !renderedPaths.has(path)));
 }
 
 let remainingPaths;
@@ -44,7 +46,6 @@ while ((remainingPaths = getRemainingPaths()).size) {
     `https://${name}`
   );
 
-
   const types = new Map();
   let count = 0n;
   let resolved = 0n;
@@ -55,19 +56,21 @@ while ((remainingPaths = getRemainingPaths()).size) {
     },
     promiseResolve(asyncId) {
       resolved += 1n;
-    }
+    },
   }).enable();
 
   console.log(url, url.toString());
-  performance.mark('A');
+  performance.mark("A");
 
   const dom = new JSDOM.JSDOM("", {
-    url: url.toString()
+    url: url.toString(),
   });
   redeclare(dom);
 
   // Create a new root element
-  const root = dom.window.document.querySelector("#root") ?? dom.window.document.createElement("div");
+  const root =
+    dom.window.document.querySelector("#root") ??
+    dom.window.document.createElement("div");
   root.id = "root";
 
   // Appending our root to the document body
@@ -92,15 +95,19 @@ while ((remainingPaths = getRemainingPaths()).size) {
   dom.window.scale = envNumber("OPERATION_SCALE", 1);
   dom.window.scaleWidth = envNumber("OPERATION_SCALE_WIDTH", 1);
   dom.window.scaleBigInt = envNumber("OPERATION_SCALE", 1n, false, true);
-  dom.window.scaleWidthBigInt = envNumber("OPERATION_SCALE_WIDTH", 1n, false, true);
-
+  dom.window.scaleWidthBigInt = envNumber(
+    "OPERATION_SCALE_WIDTH",
+    1n,
+    false,
+    true
+  );
 
   const socket = socketPort ? createConnection(socketPort) : undefined;
   let noOp = !socket;
-  socket?.on("error", () => noOp = true);
-  socket?.on("close", () => noOp = true);
+  socket?.on("error", () => (noOp = true));
+  socket?.on("close", () => (noOp = true));
   if (!noOp) {
-    process.once("uncaughtException", () => noOp = true);
+    process.once("uncaughtException", () => (noOp = true));
   }
   const seen = new Set();
   dom.window.operation = async function operation(symbol) {
@@ -108,12 +115,14 @@ while ((remainingPaths = getRemainingPaths()).size) {
     if (seen.has(symbol)) return;
     seen.add(symbol);
     if (noOp) return;
-    return someQueue = someQueue.then(async () => {
+    return (someQueue = someQueue.then(async () => {
       if (noOp) return;
       const hash = createHash("sha256");
       hash.update(symbol.toString());
       const digest = hash.digest();
-      let padded = await promisify(randomBytes)((dom.window.scaleWidth * 2.5) * 1024 * 1024);
+      let padded = await promisify(randomBytes)(
+        dom.window.scaleWidth * 2.5 * 1024 * 1024
+      );
       padded.set(Buffer.alloc(100, 1), 0);
       padded.set(Buffer.from(symbol.toString()), 0);
       padded.set(digest, 100);
@@ -130,15 +139,15 @@ while ((remainingPaths = getRemainingPaths()).size) {
           break;
         }
       }
-    });
-  }
+    }));
+  };
 
   // This will initialise our sites render
   const { render } = await import("../build/render.js");
 
   await render();
-  performance.mark('B');
-  performance.measure(`A to B`, 'A', 'B');
+  performance.mark("B");
+  performance.measure(`A to B`, "A", "B");
   console.log({ count, resolved, types });
 
   if (socket) {
@@ -156,7 +165,7 @@ while ((remainingPaths = getRemainingPaths()).size) {
   }
 
   async function getEntryPathFile(entryPath) {
-    if (!await isFile(entryPath)) {
+    if (!(await isFile(entryPath))) {
       if (await isFile(join(entryPath, "index.html"))) {
         return join(entryPath, "index.html");
       } else if (await isFile(`${entryPath}.html`)) {
@@ -176,7 +185,7 @@ while ((remainingPaths = getRemainingPaths()).size) {
   }
 
   entryPath = await getEntryPathFile(entryPath);
-  if (!await isFile(entryPath)) {
+  if (!(await isFile(entryPath))) {
     const defaultPath = join(directory, path, config.optimize.entrypoints[0]);
     // The default entry point
     entryPath = await getEntryPathFile(defaultPath);
@@ -184,7 +193,9 @@ while ((remainingPaths = getRemainingPaths()).size) {
   const entryContents = await fs.readFile(entryPath, "utf8");
   const target = new JSDOM.JSDOM(entryContents);
 
-  const targetRoot = target.window.document.querySelector("#root") ?? target.window.document.createElement("div");
+  const targetRoot =
+    target.window.document.querySelector("#root") ??
+    target.window.document.createElement("div");
   targetRoot.id = "root";
   targetRoot.innerHTML = root.innerHTML;
 
@@ -203,7 +214,6 @@ while ((remainingPaths = getRemainingPaths()).size) {
     template.content.append(foundTemplate);
   }
 
-
   // Create a template in our target DOM and then copy over using an HTML string
   // then append these to the targets body using the target templates DocumentFragment
   const targetTemplate = target.window.document.createElement("template");
@@ -211,29 +221,30 @@ while ((remainingPaths = getRemainingPaths()).size) {
   target.window.document.body.append(targetTemplate.content);
 
   const toRemove = new Set();
-  target.window.document.querySelectorAll("[data-remove-after-prerender]")
-    .forEach(node => toRemove.add(node));
-  dom.window.document.querySelectorAll("meta[name]")
-    .forEach((node) => {
-      target.window.document.querySelectorAll(`meta[name="${node.name}"]`)
-        .forEach(node => toRemove.add(node));
-    });
+  target.window.document
+    .querySelectorAll("[data-remove-after-prerender]")
+    .forEach((node) => toRemove.add(node));
+  dom.window.document.querySelectorAll("meta[name]").forEach((node) => {
+    target.window.document
+      .querySelectorAll(`meta[name="${node.name}"]`)
+      .forEach((node) => toRemove.add(node));
+  });
   for (const remove of toRemove) {
     remove.parentNode.removeChild(remove);
   }
 
-  target.window.document.title = dom.window.document.title || target.window.document.title;
-  target.window.document.querySelectorAll(`[href]`)
-    .forEach(node => links.add(node.getAttribute("href")));
+  target.window.document.title =
+    dom.window.document.title || target.window.document.title;
+  target.window.document
+    .querySelectorAll(`[href]`)
+    .forEach((node) => links.add(node.getAttribute("href")));
 
   const metaTemplate = target.window.document.createElement("template");
-  dom.window.document.head.querySelectorAll(`meta[name]`)
-    .forEach(node => {
-      target.window.document.adoptNode(node);
-      metaTemplate.content.append(node);
-    });
+  dom.window.document.head.querySelectorAll(`meta[name]`).forEach((node) => {
+    target.window.document.adoptNode(node);
+    metaTemplate.content.append(node);
+  });
   target.window.document.head.append(metaTemplate.content);
-
 
   for (const link of links) {
     // Non extension links only
@@ -249,11 +260,7 @@ while ((remainingPaths = getRemainingPaths()).size) {
   await mkdirp(dirname(outputPath));
 
   // Write to disk
-  await fs.writeFile(
-    outputPath,
-    target.serialize()
-  )
+  await fs.writeFile(outputPath, target.serialize());
 
   renderedPaths.add(entry);
 }
-

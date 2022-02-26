@@ -27,7 +27,7 @@ pre {
 }
 
 .quote {
-  background-color: rgba(0, 0, 0, .05);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .code,
@@ -37,14 +37,14 @@ pre {
   overflow-x: auto;
   overflow-y: hidden;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  background-color: rgba(0, 0, 0, .05);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 span.code {
   border: none;
   padding: 0 0.25em;
   box-sizing: content-box;
-  background-color: rgba(0, 0, 0, .1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .example-output {
@@ -64,7 +64,8 @@ button {
   font-size: inherit;
 }
 
-a, button {
+a,
+button {
   min-height: 48px;
   min-width: 48px;
   cursor: pointer;
@@ -74,4 +75,3 @@ a, button {
   margin: 0 auto;
   max-width: 40rem;
 }
-

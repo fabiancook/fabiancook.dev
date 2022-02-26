@@ -1,7 +1,4 @@
-
-
 declare namespace JSX {
-
   type DocumentNode = Element | Text;
 
   type Attributes = Record<string, unknown>;
@@ -35,29 +32,19 @@ declare namespace JSX {
     translate?: string;
   }
 
-  interface HTMLImageAttributes extends HTMLElementAttributes {
+  interface HTMLImageAttributes extends HTMLElementAttributes {}
 
-  }
-
-  interface HTMLAnchorAttributes extends HTMLElementAttributes {
-
-  }
+  interface HTMLAnchorAttributes extends HTMLElementAttributes {}
 
   interface HTMLButtonAttributes extends HTMLElementAttributes {
     type: "submit" | "button";
   }
 
-  interface HTMLLinkAttributes extends HTMLElementAttributes {
+  interface HTMLLinkAttributes extends HTMLElementAttributes {}
 
-  }
+  interface HTMLMetaAttributes extends HTMLElementAttributes {}
 
-  interface HTMLMetaAttributes extends HTMLElementAttributes {
-
-  }
-
-  interface HTMLSlotAttributes extends HTMLElementAttributes {
-
-  }
+  interface HTMLSlotAttributes extends HTMLElementAttributes {}
 
   interface HTMLScriptAttributes extends HTMLElementAttributes {
     src?: string;
@@ -127,5 +114,4 @@ declare namespace JSX {
   interface IntrinsicElements extends DOMElements, Record<symbol, Attributes> {
     fragment: Attributes;
   }
-
 }

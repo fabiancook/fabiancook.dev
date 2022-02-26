@@ -1,6 +1,6 @@
-import { SourceReference, VNode } from '@virtualstate/x';
-import { assertElement, NativeOptionsVNode, render } from '@virtualstate/dom';
-import { h } from '@virtualstate/x';
+import { SourceReference, VNode } from "@virtualstate/x";
+import { assertElement, NativeOptionsVNode, render } from "@virtualstate/dom";
+import { h } from "@virtualstate/x";
 
 export interface UnboundOptions {
   reference?: SourceReference;
@@ -9,10 +9,13 @@ export interface UnboundOptions {
   onError?(error: unknown): void;
 }
 
-export function Unbound(options: UnboundOptions, child: VNode): NativeOptionsVNode {
+export function Unbound(
+  options: UnboundOptions,
+  child: VNode
+): NativeOptionsVNode {
   const bound = Symbol("Bound");
 
-  let rendering: Promise<void>
+  let rendering: Promise<void>;
 
   return {
     reference: options.reference ?? Symbol("Unbound"),
@@ -21,12 +24,10 @@ export function Unbound(options: UnboundOptions, child: VNode): NativeOptionsVNo
       type: "Element",
       onBeforeRender(root) {
         assertElement(root);
-        rendering = rendering || (
-          createRender(root).then(noop)
-        );
-      }
-    }
-  }
+        rendering = rendering || createRender(root).then(noop);
+      },
+    },
+  };
 
   async function createRender(root: Element) {
     try {

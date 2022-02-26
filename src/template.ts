@@ -1,38 +1,41 @@
-import { VNode } from '@virtualstate/x';
-import { isElement, NativeOptionsVNode, render } from '@virtualstate/dom';
+import { VNode } from "@virtualstate/x";
+import { isElement, NativeOptionsVNode, render } from "@virtualstate/dom";
 
-export async function Templates() {
-
-}
+export async function Templates() {}
 
 export interface TemplateOptions {
   id: string;
 }
 
-export async function Template({ id }: TemplateOptions, child: VNode): Promise<VNode> {
+export async function Template(
+  { id }: TemplateOptions,
+  child: VNode
+): Promise<VNode> {
   let createTemplatePromise: Promise<HTMLTemplateElement> | undefined;
 
   return {
     reference: Symbol("Templated Document Node"),
     children: {
       async *[Symbol.asyncIterator]() {
-        yield * instance()
-      }
-    }
-  }
+        yield* instance();
+      },
+    },
+  };
 
-  async function *instance(): AsyncIterable<NativeOptionsVNode[]> {
+  async function* instance(): AsyncIterable<NativeOptionsVNode[]> {
     const template = await getTemplate(document);
-    yield Array.from(template.content.cloneNode(true).childNodes).map((node, index): NativeOptionsVNode => {
-      return {
-        reference: Symbol(["template", id, index].join(", ")),
-        source: "template",
-        options: {
-          type: "Node",
-          instance: node
-        }
+    yield Array.from(template.content.cloneNode(true).childNodes).map(
+      (node, index): NativeOptionsVNode => {
+        return {
+          reference: Symbol(["template", id, index].join(", ")),
+          source: "template",
+          options: {
+            type: "Node",
+            instance: node,
+          },
+        };
       }
-    });
+    );
   }
 
   async function getTemplate(document: Document): Promise<HTMLTemplateElement> {
@@ -40,14 +43,19 @@ export async function Template({ id }: TemplateOptions, child: VNode): Promise<V
     if (isHTMLTemplateElement(existing)) {
       return existing;
     }
-    return await (createTemplatePromise = createTemplatePromise || createTemplate(document));
+    return await (createTemplatePromise =
+      createTemplatePromise || createTemplate(document));
 
-    function isHTMLTemplateElement(value: unknown): value is HTMLTemplateElement {
+    function isHTMLTemplateElement(
+      value: unknown
+    ): value is HTMLTemplateElement {
       return isElement(value) && value.tagName.toUpperCase() === "TEMPLATE";
     }
   }
 
-  async function createTemplate(document: Document): Promise<HTMLTemplateElement> {
+  async function createTemplate(
+    document: Document
+  ): Promise<HTMLTemplateElement> {
     const template = document.createElement("template");
     const root = document.createElement("div");
     root.id = "template-root";
@@ -58,5 +66,4 @@ export async function Template({ id }: TemplateOptions, child: VNode): Promise<V
     createTemplatePromise = undefined;
     return template;
   }
-
 }

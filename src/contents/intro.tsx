@@ -1,6 +1,6 @@
-import { h } from '../h';
-import { createFragment } from '@virtualstate/x';
-import { Template } from '../template';
+import { h } from "../h";
+import { createFragment } from "@virtualstate/x";
+import { Template } from "../template";
 
 export const Intro = (
   <>
@@ -8,4 +8,4 @@ export const Intro = (
       <h1>Fabian Cook</h1>
     </Template>
   </>
-)
+);

@@ -7,18 +7,16 @@ export interface Deferred<T = void> {
 export function deferred<T = void>(): Deferred<T> {
   let resolve: Deferred<T>["resolve"] | undefined = undefined,
     reject: Deferred<T>["reject"] | undefined = undefined;
-  const promise = new Promise<T>(
-    (resolveFn, rejectFn) => {
-      resolve = resolveFn;
-      reject = rejectFn;
-    }
-  );
+  const promise = new Promise<T>((resolveFn, rejectFn) => {
+    resolve = resolveFn;
+    reject = rejectFn;
+  });
   ok(resolve);
   ok(reject);
   return {
     resolve,
     reject,
-    promise
+    promise,
   };
 }
 

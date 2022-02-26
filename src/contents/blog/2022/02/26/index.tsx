@@ -6,30 +6,22 @@ async function Content() {
   return content;
 }
 
-export const Rendering20210523 = (
+export const AnAsyncThing20220226 = (
   <Post
-    title="Rendering"
-    date="23rd May 2021"
-    path="/2021/05/23/rendering"
-    summary="Rendering with @virtualstate/x"
+    title="An Async Thing"
+    date="26th Feb 2022"
+    path="/2022/02/26/an-async-thing"
+    summary="How to work with many async objects and functions"
+    draft
   >
     <h1>
-      <Title>Rendering</Title>
+      <Title>An Async Thing</Title>
     </h1>
     <p>
-      <em>23rd May 2021</em>
+      <em>26th Feb 2022</em>
     </p>
     <div class="quote">
-      <Summary>
-        Rendering with{" "}
-        <a
-          rel="noopener"
-          href="https://github.com/virtualstate/x"
-          target="_blank"
-        >
-          @virtualstate/x
-        </a>
-      </Summary>
+      <Summary>How to work with many async objects and functions</Summary>
     </div>
     <Content />
     <hr />
@@ -39,7 +31,7 @@ export const Rendering20210523 = (
         <a
           target="_blank"
           rel="noopener"
-          href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2021/05/23/index.tsx"
+          href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2022/02/26/index.tsx"
         >
           github.com/fabiancook/fabiancook.dev
         </a>

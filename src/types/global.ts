@@ -1,5 +1,4 @@
 declare global {
-
   interface Window {
     siteRender?: Promise<void>;
     operation?(symbol: symbol): Promise<void>;
@@ -8,7 +7,6 @@ declare global {
     scaleBigInt?: bigint;
     scaleWidthBigInt?: bigint;
   }
-
 }
 
 export {};

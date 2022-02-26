@@ -1,15 +1,29 @@
-import { createNode, Source, VNode, VNodeRepresentationSource, Fragment, isTokenVNodeFn } from '@virtualstate/x';
+import {
+  createNode,
+  Source,
+  VNode,
+  VNodeRepresentationSource,
+  Fragment,
+  isTokenVNodeFn,
+} from "@virtualstate/x";
 import {
   isGetDocumentNodeOptions,
   isNativeOptions,
   NativeOptions,
   isOnBeforeRenderOptions,
-  isAttributesOptions
+  isAttributesOptions,
 } from "@virtualstate/dom";
 
-export function h<O extends object = object>(source: Source<O> | VNode, options?: O, ...children: VNodeRepresentationSource[]): VNode
-export function h(source: Source<object>, options?: object, ...children: VNodeRepresentationSource[]): VNode {
-
+export function h<O extends object = object>(
+  source: Source<O> | VNode,
+  options?: O,
+  ...children: VNodeRepresentationSource[]
+): VNode;
+export function h(
+  source: Source<object>,
+  options?: object,
+  ...children: VNodeRepresentationSource[]
+): VNode {
   if (isTokenVNodeFn(source)) {
     return h(source(options), options, ...children);
   }
@@ -26,12 +40,12 @@ export function h(source: Source<object>, options?: object, ...children: VNodeRe
     };
 
     const toJSON = () => ({
-      attributes: resultingOptions.attributes
+      attributes: resultingOptions.attributes,
     });
 
     Object.defineProperty(resultingOptions, "toJSON", {
       value: toJSON,
-      enumerable: false
+      enumerable: false,
     });
 
     let remainingOptions: object = options;
@@ -49,7 +63,7 @@ export function h(source: Source<object>, options?: object, ...children: VNodeRe
     }
 
     const finalOptions = {
-      attributes: remainingOptions
+      attributes: remainingOptions,
     };
 
     if (isAttributesOptions(finalOptions)) {

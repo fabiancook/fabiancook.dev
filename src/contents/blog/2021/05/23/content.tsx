@@ -1,5 +1,5 @@
 import { h } from "../../../../../h";
-import { h as f, VNode } from '@virtualstate/x';
+import { h as f, VNode } from "@virtualstate/x";
 
 export default (
   <section>
@@ -7,9 +7,11 @@ export default (
     <div class="quote">
       <em>
         This is a blog post that I will be extending over time and used as a
-        staging grounds for <span class="code">@virtualstate/x</span>'s
-        README file
-      </em><br /><br />
+        staging grounds for <span class="code">@virtualstate/x</span>'s README
+        file
+      </em>
+      <br />
+      <br />
       <em>
         Pssst... Checkout the hidden divs by using your browsers developer tools
       </em>
@@ -54,9 +56,7 @@ for await (const results of children) {
     <div hidden>
       <Children />
     </div>
-    <p>
-      Any function type can be used as a virtual node
-    </p>
+    <p>Any function type can be used as a virtual node</p>
     <pre>
       {`
 import { h } from "@virtualstate/x";
@@ -100,7 +100,7 @@ for await (const results of children) {
       <Functions />
     </div>
   </section>
-)
+);
 
 function One() {
   const node = f(1);
@@ -122,12 +122,12 @@ async function Children() {
 
   for await (const results of children) {
     // Eventually Logs { results: ["first", "second", "third" ] }
-    console.log({ results: results.map(node => node.source) });
+    console.log({ results: results.map((node) => node.source) });
   }
   return node;
 }
 
-async function *Functions() {
+async function* Functions() {
   function Fn() {
     return "Function ✨";
   }
@@ -135,23 +135,23 @@ async function *Functions() {
     await new Promise<void>(queueMicrotask);
     return "Async Function 💡";
   }
-  function *GeneratorFn() {
+  function* GeneratorFn() {
     yield "GeneratorFn Loading";
     yield "GeneratorFn 💥";
   }
-  async function *AsyncGeneratorFn() {
+  async function* AsyncGeneratorFn() {
     yield "AsyncGeneratorFn Loading";
     yield "AsyncGeneratorFn 🔥";
   }
   function Fns() {
-    return [
-      h(Fn),
-      h(AsyncFn),
-      h(GeneratorFn),
-      h(AsyncGeneratorFn)
-    ]
-      .filter((node: VNode): node is VNode & { source: Function } => typeof node.source === "function")
-      .map(node => f("fn", { name: node.source.name }, node.source.name, node));
+    return [h(Fn), h(AsyncFn), h(GeneratorFn), h(AsyncGeneratorFn)]
+      .filter(
+        (node: VNode): node is VNode & { source: Function } =>
+          typeof node.source === "function"
+      )
+      .map((node) =>
+        f("fn", { name: node.source.name }, node.source.name, node)
+      );
   }
 
   const { children } = f(Fns);
@@ -161,18 +161,18 @@ async function *Functions() {
   for await (const results of children) {
     // Eventually Logs { results: ["Fn", "AsyncFn", "GeneratorFn", "AsyncGeneratorFn" ] }
     console.log({
-      results: results.map(node => {
+      results: results.map((node) => {
         assertRecord(node.options);
         return node.options.name;
-
-      })
+      }),
     });
     yield results;
   }
-
 }
 
-function assertRecord(value?: object): asserts value is Record<string, unknown> {
+function assertRecord(
+  value?: object
+): asserts value is Record<string, unknown> {
   if (!value) {
     throw new Error("Expected record");
   }

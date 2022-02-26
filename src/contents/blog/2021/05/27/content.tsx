@@ -1,5 +1,5 @@
 import { h } from "../../../../../h";
-import { isScalarVNode, VNode } from '@virtualstate/x';
+import { isScalarVNode, VNode } from "@virtualstate/x";
 
 export default (
   <section>
@@ -7,7 +7,7 @@ export default (
       <Things global={window.scale ?? 1000} internal={window.scaleWidth ?? 1} />
     </DoThings>
   </section>
-)
+);
 
 async function DoThings(o: unknown, state: VNode) {
   const stateEvents = state.children;
@@ -17,16 +17,14 @@ async function DoThings(o: unknown, state: VNode) {
   for await (const events of stateEvents) {
     const unseen = events
       .filter(isScalarVNode)
-      .map(node => node.source)
+      .map((node) => node.source)
       .filter((source): source is symbol => typeof source === "symbol")
-      .filter(event => !seen.has(event))
-    unseen.forEach(source => seen.add(source));
+      .filter((event) => !seen.has(event));
+    unseen.forEach((source) => seen.add(source));
     // You will receive global * internal events here
     totalEvents += events.length;
     if (window.operation) {
-      await Promise.all(
-        unseen.map(window.operation)
-      );
+      await Promise.all(unseen.map(window.operation));
     }
   }
   console.log({ totalEvents, seen: seen.size });
@@ -37,7 +35,7 @@ interface ThingOptions {
   internal: number;
 }
 
-async function *Thing({ id, internal }: ThingOptions) {
+async function* Thing({ id, internal }: ThingOptions) {
   for (let i = 0; i < internal; i += 1) {
     yield Symbol(id);
   }
@@ -49,5 +47,7 @@ interface ThingsOptions {
 }
 
 function Things({ global, internal }: ThingsOptions) {
-  return Array.from({ length: global }, (_, id) => <Thing id={id} internal={internal} />);
+  return Array.from({ length: global }, (_, id) => (
+    <Thing id={id} internal={internal} />
+  ));
 }

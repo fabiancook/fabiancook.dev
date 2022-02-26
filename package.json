@@ -6,8 +6,7 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build && node scripts/prerender.js && cp ./netlify.toml ./build",
-    "test": "echo \"This template does not include a test runner by default.\" && exit 1",
-    "prepare": "husky install"
+    "test": "echo \"This template does not include a test runner by default.\" && exit 1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.21",

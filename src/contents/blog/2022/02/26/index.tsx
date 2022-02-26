@@ -12,7 +12,6 @@ export const AnAsyncThing20220226 = (
     date="26th Feb 2022"
     path="/2022/02/26/an-async-thing"
     summary="How to work with many async objects and functions"
-    draft
   >
     <h1>
       <Title>An Async Thing</Title>

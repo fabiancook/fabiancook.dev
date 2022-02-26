@@ -264,6 +264,62 @@ for await (const state of object) {
       Promise.allSettled, while still being able to inspect individual promise
       statuses and values as they happen.{" "}
     </p>
+    <p>
+      Given we have a consistent way to both input and output async iterables
+      and promises, we can open our input up to also include async functions,
+      which return promises, and async generator functions, which return async
+      iterables.
+    </p>
+    <p>
+      <a href="https://github.com/virtualstate/promise/commit/b854229ae6ef7f624a639d15a251098c7cd50e9f#diff-91241161695e12a799702b5f738bb39e34e2fe542a0ddcc515ee630973de3573R30-R45">
+        Implementing this
+      </a>{" "}
+      involves providing additional mapping for these extra value types, while
+      still providing the default promise resolution.
+    </p>
+    <p>
+      If we come across an async iterable input type, we again assume that each
+      yielded value is only the objects current state, and that the final
+      fulfilled value is its settled & returned state.
+    </p>
+    <p>
+      If we come across a function, we assume it is a zero argument function
+      that returns a promise or an async iterable, and then follow the same
+      already defined steps.
+    </p>
+    <p>
+      Because the all function is implemented using allSettledGenerator as its
+      core source, it required no implementation change for this.
+    </p>
+    <p>We can see now we can use a mix of inputs:</p>
+    <pre>
+      {`
+const asyncValues = [
+  Promise.resolve(1),
+  async () => 2,
+  async function *() {
+    yield 3;
+  },
+  {
+    async *[Symbol.asyncIterator]() {
+      yield 4;
+    }
+  }
+];
+`.trim()}
+    </pre>
+    <pre>
+      {`
+import { allSettled } from "@virtualstate/promise/all-settled";
+const object = allSettled(asyncValues);
+`.trim()}
+    </pre>
+    <pre>
+      {`
+import { all } from "@virtualstate/promise/all";
+const object = all(asyncValues);
+`.trim()}
+    </pre>
   </section>
 );
 
@@ -287,6 +343,12 @@ async function Examples() {
       </script>
       <script type="application/json" hidden id="asyncThingAllBoth">
         {JSON.stringify(await asyncThingAllBoth(), undefined, "  ")}
+      </script>
+      <script type="application/json" hidden id="inputAnyAllSettled">
+        {JSON.stringify(await inputAnyAllSettled(), undefined, "  ")}
+      </script>
+      <script type="application/json" hidden id="inputAnyAll">
+        {JSON.stringify(await inputAnyAll(), undefined, "  ")}
       </script>
     </>
   );
@@ -348,6 +410,21 @@ function makePromises() {
   ] as const;
 }
 
+function makeAsyncValues() {
+  return [
+    Promise.resolve(1),
+    async () => 2,
+    async function* () {
+      yield 3;
+    },
+    {
+      async *[Symbol.asyncIterator]() {
+        yield 4;
+      },
+    },
+  ] as const;
+}
+
 // async function examples() {
 //   await withUnion();
 //   await withAllSettled();
@@ -397,6 +474,28 @@ async function asyncThingAllBoth() {
   returningResults.push({ finalYieldedResult: asyncThingFinalYieldedResult });
 
   for await (const asyncThingForAwaitState of all(makePromises())) {
+    console.log({ asyncThingForAwaitState });
+    returningResults.push({ results: asyncThingForAwaitState });
+  }
+  return returningResults;
+}
+async function inputAnyAllSettled() {
+  const returningResults = [];
+  const asyncThingFinalYieldedResult = await allSettled(makeAsyncValues());
+  console.log({ asyncThingFinalYieldedResult });
+  returningResults.push({ finalYieldedResult: asyncThingFinalYieldedResult });
+  for await (const asyncThingForAwaitState of allSettled(makeAsyncValues())) {
+    console.log({ asyncThingForAwaitState });
+    returningResults.push({ results: asyncThingForAwaitState });
+  }
+  return returningResults;
+}
+async function inputAnyAll() {
+  const returningResults = [];
+  const asyncThingFinalYieldedResult = await all(makeAsyncValues());
+  console.log({ asyncThingFinalYieldedResult });
+  returningResults.push({ finalYieldedResult: asyncThingFinalYieldedResult });
+  for await (const asyncThingForAwaitState of all(makeAsyncValues())) {
     console.log({ asyncThingForAwaitState });
     returningResults.push({ results: asyncThingForAwaitState });
   }

@@ -31,7 +31,7 @@ export const ManyThings20210527 = (
         <a
           target="_blank"
           rel="noopener"
-          href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2021/05/23/index.tsx"
+          href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2021/05/23/content.tsx"
         >
           github.com/fabiancook/fabiancook.dev
         </a>

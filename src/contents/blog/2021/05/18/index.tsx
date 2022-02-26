@@ -39,7 +39,7 @@ export const ConcurrentUnions20210518 = (
         <a
           target="_blank"
           rel="noopener"
-          href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2021/05/18/index.tsx"
+          href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2021/05/18/content.tsx"
         >
           github.com/fabiancook/fabiancook.dev
         </a>

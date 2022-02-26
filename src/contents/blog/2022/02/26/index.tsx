@@ -30,7 +30,7 @@ export const AnAsyncThing20220226 = (
         <a
           target="_blank"
           rel="noopener"
-          href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2022/02/26/index.tsx"
+          href="https://github.com/fabiancook/fabiancook.dev/blob/main/src/contents/blog/2022/02/26/content.tsx"
         >
           github.com/fabiancook/fabiancook.dev
         </a>

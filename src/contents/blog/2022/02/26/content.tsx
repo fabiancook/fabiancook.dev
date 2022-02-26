@@ -39,7 +39,7 @@ export default (
     <p>
       Using&nbsp;
       <a
-        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all"
+        href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled"
         target="_blank"
         rel="noopener"
       >

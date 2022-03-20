@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@virtualstate/dom": "^2.1.1",
+    "@virtualstate/focus": "^1.0.1-alpha.49",
     "@virtualstate/fringe": "^2.1.1",
     "@virtualstate/hooks": "^2.1.1",
     "@virtualstate/hooks-extended": "^2.1.1",

@@ -111,7 +111,7 @@ declare namespace JSX {
     option: HTMLOptionAttributes;
   }
 
-  interface IntrinsicElements extends DOMElements, Record<symbol, Attributes> {
+  interface IntrinsicElements extends DOMElements, Record<symbol | string, Attributes> {
     fragment: Attributes;
   }
 }
